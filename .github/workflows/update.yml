@@ -1,0 +1,22 @@
+name: Auto Update README
+
+on:
+  schedule:
+    - cron: "*/5 * * * *" 
+  workflow_dispatch:
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v3
+
+      - name: Append space to README
+        run: |
+          echo "Appending space..."
+          echo " " >> README.md
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "chore: trigger update [skip ci]" || echo "Nothing to commit"
+          git push
