@@ -2,21 +2,29 @@ name: Auto Update README
 
 on:
   schedule:
-    - cron: "*/5 * * * *" 
+    - cron: "*/5 * * * *"
   workflow_dispatch:
+
 jobs:
   update-readme:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
     steps:
-      - name: Clone repo
+      - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Append space to README
+      - name: Append space to README (no newline)
         run: |
-          echo "Appending space..."
-          echo " " >> README.md
+          echo "Appending space to end of file..."
+          sed -i '${s/[[:space:]]*$//}' README.md
+          printf " " >> README.md
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
           git add README.md
-          git commit -m "chore: trigger update [skip ci]" || echo "Nothing to commit"
+          git commit -m "Update README.md"
           git push
