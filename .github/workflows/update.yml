@@ -2,7 +2,7 @@ name: Auto Update README
 
 on:
   schedule:
-    - cron: "*/1 * * * *" 
+    - cron: "*/1440 * * * *" 
   workflow_dispatch:
 jobs:
   update-readme:
